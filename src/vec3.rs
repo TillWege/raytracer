@@ -60,10 +60,22 @@ impl Default for Vec3 {
     }
 }
 
+//
+// Operator Overloads for Adding
+//
+
 impl Add for Vec3 {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
+        self + &rhs
+    }
+}
+
+impl Add<&Vec3> for Vec3 {
+    type Output = Self;
+
+    fn add(self, rhs: &Self) -> Self {
         Self { 
             x: self.x + rhs.x, 
             y: self.y + rhs.y, 
@@ -72,10 +84,42 @@ impl Add for Vec3 {
     }
 }
 
+impl Add<Vec3> for &Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: Vec3) -> Vec3 {
+        self + &rhs
+    }
+}
+
+impl Add for &Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: Self) -> Vec3 {
+        Vec3 { 
+            x: self.x + rhs.x, 
+            y: self.y + rhs.y, 
+            z: self.z + rhs.z
+        }
+    }
+}
+
+//
+// Operator Overloads for Subtracting
+//
+
 impl Sub for Vec3 {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
+        self - &rhs
+    }
+}
+
+impl Sub<&Vec3> for Vec3 {
+    type Output = Self;
+
+    fn sub(self, rhs: &Self) -> Self {
         Self { 
             x: self.x - rhs.x, 
             y: self.y - rhs.y, 
@@ -84,10 +128,43 @@ impl Sub for Vec3 {
     }
 }
 
+impl Sub<Vec3> for &Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: Vec3) -> Vec3 {
+        self - &rhs
+    }
+}
+
+impl Sub for &Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: Self) -> Vec3 {
+        Vec3 { 
+            x: self.x - rhs.x, 
+            y: self.y - rhs.y, 
+            z: self.z - rhs.z
+        }
+    }
+}
+
+//
+// Operator Overloads for Multiplying
+//
+
 impl Mul<f32> for Vec3 {
     type Output = Self;
 
     fn mul(self, rhs: f32) -> Self {
+        self * &rhs
+    }
+}
+
+
+impl Mul<&f32> for Vec3 {
+    type Output = Self;
+
+    fn mul(self, rhs: &f32) -> Self {
         Self { 
             x: self.x * rhs, 
             y: self.y * rhs, 
@@ -96,13 +173,66 @@ impl Mul<f32> for Vec3 {
     }
 }
 
+impl Mul<f32> for &Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: f32) -> Vec3 {
+        self * &rhs
+    }
+}
+    
+impl Mul<&f32> for &Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: &f32) -> Vec3 {
+        Vec3 { 
+            x: self.x * rhs, 
+            y: self.y * rhs, 
+            z: self.z * rhs
+        }
+    }
+}
+
+//
+// Operator Overloads for Multipling
+//
+
 impl Mul<Vec3> for f32 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Vec3 {
+        rhs * &self
+    }
+}
+
+impl Mul<&Vec3> for f32 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: &Vec3) -> Vec3 {
+        rhs * &self
+    }
+}
+
+impl Mul<Vec3> for &f32 {
     type Output = Vec3;
 
     fn mul(self, rhs: Vec3) -> Vec3 {
         rhs * self
     }
 }
+
+impl Mul<&Vec3> for &f32 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: &Vec3) -> Vec3 {
+        rhs * self
+    }
+}
+
+
+//
+// Operator Overloads for Dividing
+//
 
 impl Div<f32> for Vec3 {
     type Output = Self;
@@ -111,6 +241,31 @@ impl Div<f32> for Vec3 {
         self * (1.0 / rhs)
     }
 }
+
+impl Div<&f32> for Vec3 {
+    type Output = Self;
+
+    fn div(self, rhs: &f32) -> Self {
+        self * (1.0 / rhs)
+    }
+}
+
+impl Div<f32> for &Vec3 {
+    type Output = Vec3;
+
+    fn div(self, rhs: f32) -> Vec3 {
+        self * (1.0 / rhs)
+    }
+}
+
+impl Div<&f32> for &Vec3 {
+    type Output = Vec3;
+
+    fn div(self, rhs: &f32) -> Vec3 {
+        self * (1.0 / rhs)
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -192,6 +347,50 @@ mod tests {
         let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
         assert_eq!(v1.unit_vector().length().round(), (1.0 as f32));
         
+    }
+
+    #[test]
+    fn test_add_impl() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 4.0, y: 5.0, z: 6.0 };
+        let v3 = super::Vec3 { x: 5.0, y: 7.0, z: 9.0 };
+
+        assert_eq!(v1 + &v2, v3);
+        assert_eq!(&v1 + v2, v3);
+        assert_eq!(&v1 + &v2, v3);
+        assert_eq!(v1 + v2, v3);
+    }
+
+    #[test]
+    fn test_sub_impl() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 4.0, y: 5.0, z: 6.0 };
+        let v3 = super::Vec3 { x: 5.0, y: 7.0, z: 9.0 };
+
+        assert_eq!(v3 - &v2, v1);
+        assert_eq!(&v3 - v2, v1);
+        assert_eq!(&v3 - &v2, v1);
+        assert_eq!(v3 - v2, v1);
+    }
+
+    #[test]
+    fn test_mul_impl() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 2.0, y: 4.0, z: 6.0 };
+        assert_eq!(v1 * &2.0, v2);
+        assert_eq!(&v1 * 2.0, v2);
+        assert_eq!(&v1 * &2.0, v2);
+        assert_eq!(v1 * 2.0, v2);
+    }
+
+    #[test]
+    fn test_div_impl() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 0.5, y: 1.0, z: 1.5 };
+        assert_eq!(v1 / &2.0, v2);
+        assert_eq!(&v1 / 2.0, v2);
+        assert_eq!(&v1 / &2.0, v2);
+        assert_eq!(v1 / 2.0, v2);
     }
 
 

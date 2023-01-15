@@ -1,10 +1,12 @@
 mod vec3;
 mod color;
+mod point;
 
 const IMAGE_WIDTH: u32 = 256;
 const IMAGE_HEIGHT: u32 = 256;
 
 fn main() {
+
     let mut image = image::ImageBuffer::new(IMAGE_WIDTH, IMAGE_HEIGHT);
 
     for y in 0..IMAGE_HEIGHT {
@@ -18,6 +20,8 @@ fn main() {
         }
     }
     
+
+
     if let Err(e) = image.save("image.png") {
         println!("Error saving image: {}", e);
     }
