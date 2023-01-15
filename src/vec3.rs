@@ -1,30 +1,34 @@
 use std::ops::{Add, Sub, Mul, Div};
 
 #[derive(Debug, PartialEq, Copy, Clone)]
-struct Vec3 {
+pub(crate) struct Vec3 {
     x: f32,
     y: f32,
     z: f32
 }
 
 impl Vec3 {
-    fn zero() -> Self {
+    pub(crate) fn zero() -> Self {
         Self { x: 0.0, y: 0.0, z: 0.0 }
     }
 
-    fn length_squared(&self) -> f32 {
+    pub(crate) fn new(x: f32, y: f32, z: f32) -> Self {
+        Self { x, y, z }
+    }
+
+    pub(crate) fn length_squared(&self) -> f32 {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
 
-    fn length(&self) -> f32 {
+    pub(crate) fn length(&self) -> f32 {
         self.length_squared().sqrt()
     }
 
-    fn dot(&self, rhs: Self) -> f32 {
+    pub(crate) fn dot(&self, rhs: Self) -> f32 {
         self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
     }
 
-    fn cross(&self, rhs: Self) -> Self {
+    pub(crate) fn cross(&self, rhs: Self) -> Self {
         Self { 
             x: self.y * rhs.z - self.z * rhs.y, 
             y: self.z * rhs.x - self.x * rhs.z, 
@@ -32,10 +36,21 @@ impl Vec3 {
         }
     }
 
-    fn unit_vector(&self) -> Self {
+    pub(crate) fn unit_vector(&self) -> Self {
         *self / self.length()
     }
 
+    pub(crate) fn x(&self) -> f32 {
+        self.x
+    }
+
+    pub(crate) fn y(&self) -> f32 {
+        self.y
+    }
+
+    pub(crate) fn z(&self) -> f32 {
+        self.z
+    }
 
 }
 
@@ -122,6 +137,14 @@ mod tests {
     }
 
     #[test]
+    fn new() {
+        let v = super::Vec3::new(1.0, 2.0, 3.0);
+        assert_eq!(v.x(), 1.0);
+        assert_eq!(v.y(), 2.0);
+        assert_eq!(v.z(), 3.0);
+    }
+
+    #[test]
     fn math() {
         let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
         let v2 = super::Vec3 { x: 4.0, y: 5.0, z: 6.0 };
@@ -142,5 +165,34 @@ mod tests {
         let v7 = super::Vec3 { x: 0.5, y: 1.0, z: 1.5 };
         assert_eq!(v6 / 2.0, v7);
     }
+
+    #[test]
+    fn dot() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 4.0, y: 5.0, z: 6.0 };
+        assert_eq!(v1.dot(v2), 32.0);
+    }
+
+    #[test]
+    fn cross() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 4.0, y: 5.0, z: 6.0 };
+        assert_eq!(v1.cross(v2), super::Vec3 { x: -3.0, y: 6.0, z: -3.0 });
+    }
+
+    #[test]
+    fn unit_vector() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        let v2 = super::Vec3 { x: 0.26726124, y: 0.5345225, z: 0.8017837 };
+        assert_eq!(v1.unit_vector(), v2);
+    }
+
+    #[test]
+    fn unit_vector_length() {
+        let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
+        assert_eq!(v1.unit_vector().length().round(), (1.0 as f32));
+        
+    }
+
 
 }
