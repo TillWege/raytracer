@@ -1,6 +1,7 @@
 mod vec3;
 mod color;
 mod point;
+mod ray;
 
 const IMAGE_WIDTH: u32 = 256;
 const IMAGE_HEIGHT: u32 = 256;
