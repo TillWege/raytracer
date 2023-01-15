@@ -63,6 +63,17 @@ impl Default for Vec3 {
 //
 // Operator Overloads for Adding
 //
+impl Add for &Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: Self) -> Vec3 {
+        Vec3 { 
+            x: self.x + rhs.x, 
+            y: self.y + rhs.y, 
+            z: self.z + rhs.z
+        }
+    }
+}
 
 impl Add for Vec3 {
     type Output = Self;
@@ -76,11 +87,7 @@ impl Add<&Vec3> for Vec3 {
     type Output = Self;
 
     fn add(self, rhs: &Self) -> Self {
-        Self { 
-            x: self.x + rhs.x, 
-            y: self.y + rhs.y, 
-            z: self.z + rhs.z
-        }
+        &self + rhs
     }
 }
 
@@ -92,49 +99,9 @@ impl Add<Vec3> for &Vec3 {
     }
 }
 
-impl Add for &Vec3 {
-    type Output = Vec3;
-
-    fn add(self, rhs: Self) -> Vec3 {
-        Vec3 { 
-            x: self.x + rhs.x, 
-            y: self.y + rhs.y, 
-            z: self.z + rhs.z
-        }
-    }
-}
-
 //
 // Operator Overloads for Subtracting
 //
-
-impl Sub for Vec3 {
-    type Output = Self;
-
-    fn sub(self, rhs: Self) -> Self {
-        self - &rhs
-    }
-}
-
-impl Sub<&Vec3> for Vec3 {
-    type Output = Self;
-
-    fn sub(self, rhs: &Self) -> Self {
-        Self { 
-            x: self.x - rhs.x, 
-            y: self.y - rhs.y, 
-            z: self.z - rhs.z
-        }
-    }
-}
-
-impl Sub<Vec3> for &Vec3 {
-    type Output = Vec3;
-
-    fn sub(self, rhs: Vec3) -> Vec3 {
-        self - &rhs
-    }
-}
 
 impl Sub for &Vec3 {
     type Output = Vec3;
@@ -148,9 +115,44 @@ impl Sub for &Vec3 {
     }
 }
 
+impl Sub for Vec3 {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self {
+        self - &rhs
+    }
+}
+
+impl Sub<&Vec3> for Vec3 {
+    type Output = Self;
+
+    fn sub(self, rhs: &Self) -> Self {
+        &self - rhs
+    }
+}
+
+impl Sub<Vec3> for &Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: Vec3) -> Vec3 {
+        self - &rhs
+    }
+}
+
 //
 // Operator Overloads for Multiplying
 //
+impl Mul<&f32> for &Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: &f32) -> Vec3 {
+        Vec3 { 
+            x: self.x * rhs, 
+            y: self.y * rhs, 
+            z: self.z * rhs
+        }
+    }
+}
 
 impl Mul<f32> for Vec3 {
     type Output = Self;
@@ -165,11 +167,7 @@ impl Mul<&f32> for Vec3 {
     type Output = Self;
 
     fn mul(self, rhs: &f32) -> Self {
-        Self { 
-            x: self.x * rhs, 
-            y: self.y * rhs, 
-            z: self.z * rhs
-        }
+        &self * rhs
     }
 }
 
@@ -178,18 +176,6 @@ impl Mul<f32> for &Vec3 {
 
     fn mul(self, rhs: f32) -> Vec3 {
         self * &rhs
-    }
-}
-    
-impl Mul<&f32> for &Vec3 {
-    type Output = Vec3;
-
-    fn mul(self, rhs: &f32) -> Vec3 {
-        Vec3 { 
-            x: self.x * rhs, 
-            y: self.y * rhs, 
-            z: self.z * rhs
-        }
     }
 }
 
@@ -233,12 +219,19 @@ impl Mul<&Vec3> for &f32 {
 //
 // Operator Overloads for Dividing
 //
+impl Div<&f32> for &Vec3 {
+    type Output = Vec3;
+
+    fn div(self, rhs: &f32) -> Vec3 {
+        self * (1.0 / rhs)
+    }
+}
 
 impl Div<f32> for Vec3 {
     type Output = Self;
 
     fn div(self, rhs: f32) -> Self {
-        self * (1.0 / rhs)
+        &self / &rhs
     }
 }
 
@@ -246,7 +239,7 @@ impl Div<&f32> for Vec3 {
     type Output = Self;
 
     fn div(self, rhs: &f32) -> Self {
-        self * (1.0 / rhs)
+        &self / rhs
     }
 }
 
@@ -254,15 +247,7 @@ impl Div<f32> for &Vec3 {
     type Output = Vec3;
 
     fn div(self, rhs: f32) -> Vec3 {
-        self * (1.0 / rhs)
-    }
-}
-
-impl Div<&f32> for &Vec3 {
-    type Output = Vec3;
-
-    fn div(self, rhs: &f32) -> Vec3 {
-        self * (1.0 / rhs)
+        self / &rhs
     }
 }
 
