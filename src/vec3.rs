@@ -24,7 +24,7 @@ impl Vec3 {
         self.length_squared().sqrt()
     }
 
-    pub(crate) fn dot(&self, rhs: Self) -> f32 {
+    pub(crate) fn dot(&self, rhs: &Self) -> f32 {
         self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
     }
 
@@ -310,7 +310,7 @@ mod tests {
     fn dot() {
         let v1 = super::Vec3 { x: 1.0, y: 2.0, z: 3.0 };
         let v2 = super::Vec3 { x: 4.0, y: 5.0, z: 6.0 };
-        assert_eq!(v1.dot(v2), 32.0);
+        assert_eq!(v1.dot(&v2), 32.0);
     }
 
     #[test]

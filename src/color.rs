@@ -11,7 +11,20 @@ impl Color {
         Self::new(1.0, 1.0, 1.0)
     }
 
+    pub(crate) fn Red() -> Self{
+        Self::new(1.0, 0.0, 0.0)
+    }
+
+    pub(crate) fn Green() -> Self{
+        Self::new(0.0, 1.0, 0.0)
+    }
+
+    pub(crate) fn Blue() -> Self{
+        Self::new(0.0, 0.0, 1.0)
+    }
+
     pub(crate) fn to_rgb(&self) -> image::Rgb<u8> {
         image::Rgb([(self.x() * 256.0) as u8, (self.y() * 256.0) as u8, (self.z() * 256.0) as u8])
     }
 }
+

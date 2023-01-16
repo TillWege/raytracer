@@ -12,3 +12,21 @@ impl Point{
         (self - other).length()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_distance() {
+        let point1 = Point::new(1.0, 2.0, 3.0);
+        let point2 = Point::new(4.0, 5.0, 6.0);
+        assert_eq!(point1.distance(&point2), 5.196152);
+    }
+
+    #[test]
+    fn test_distance_from_origin() {
+        let point = Point::new(1.0, 2.0, 3.0);
+        assert_eq!(point.distance_from_origin(), 3.7416575);
+    }
+}
